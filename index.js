@@ -2,27 +2,33 @@ import express from "express";
 import bodyParser from "body-parser";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.render("solution.ejs");
+  res.render("index.ejs");
 });
 
 app.post("/submit", (req, res) => {
   const randomAdj = adj[Math.floor(Math.random() * adj.length)];
   const randomNoun = noun[Math.floor(Math.random() * noun.length)];
-  res.render("solution.ejs", {
+  res.render("index.ejs", {
     adjective: randomAdj,
     noun: randomNoun,
   });
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+// Jalankan server HANYA untuk development lokal
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Listening on port ${port}`);
+    });
+}
+
+export default app;
 
 const adj = [
   "abandoned",
