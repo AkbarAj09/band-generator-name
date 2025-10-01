@@ -1,9 +1,17 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,10 +30,10 @@ app.post("/submit", (req, res) => {
 });
 
 // Jalankan server HANYA untuk development lokal
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(port, () => {
-        console.log(`Listening on port ${port}`);
-    });
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
 }
 
 export default app;
